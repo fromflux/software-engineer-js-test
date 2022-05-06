@@ -1,22 +1,40 @@
 import '../css/main.scss'
 
-import PhotoEditor from './photo-editor'
+import PhotoEditor from './editor-canvas'
 
 const AppView = () => {
     document.body.innerHTML = `<h1>Simple Example</h1>
         <form action="#">
             <fieldset>
                 <label for="fileSelector">Select an Image file</label>
-                <input type="file" id="fileSelector" />
+                <input type="file" id="fileSelector" accept=".jpeg,.jpg,.png,.gif"/>
+            </fieldset>
+            <fieldset>
+                <label for="submitBtn">Save current project</label>
+                <button id="submitBtn" disabled>Submit</div>
+            </fieldset>
+            <fieldset>
+                <label for="importBtn">Load saved project</label>
+                <button id="importBtn">Import</div>
+                <input type="file" id="importSelector" accept=".json" hidden />
             </fieldset>
         </form>
-        <div id="editor"></div>
-        <button id="submitBtn" disabled>Submit</div>
-        <button id="importBtn">Import</div>
-        <input type="file" id="importSelector" hidden />
+
+        <canvas id="editor-canvas"></canvas>
+        
+        <div class="editor-controls">
+            <button id="upBtn">UP</button>
+            <button id="downBtn">DOWN</button>
+            <button id="leftBtn">LEFT</button>
+            <button id="rightBtn">RIGHT</button>
+            <div class="editor-controls-zoom">
+                <button id="zoomInBtn">+</button>
+                <button id="zoomOutBtn">-</button>
+            </div>
+        </div>
     `;
 
-    const photoEditor = new PhotoEditor('#editor');
+    const photoEditor = new PhotoEditor('#editor-canvas');
 
     let currentFileName = '';
 
@@ -96,6 +114,46 @@ const AppView = () => {
                 }
             }
         };
+    });
+
+    // --- BUTTONS ---
+
+    const leftBtn = document.getElementById("leftBtn");
+    leftBtn.addEventListener('click', () => {
+        const delta = 10;
+        photoEditor.translateImage(delta, 0)
+    });
+
+    const rightBtn = document.getElementById("rightBtn");
+    rightBtn.addEventListener('click', () => {
+        const delta = -10;
+        photoEditor.translateImage(delta, 0)
+    });
+
+    const upBtn = document.getElementById("upBtn");
+    upBtn.addEventListener('click', () => {
+        const delta = 10;
+        photoEditor.translateImage(0, delta);
+    });
+
+    const downBtn = document.getElementById("downBtn");
+    downBtn.addEventListener('click', () => {
+        const delta = -10;
+        photoEditor.translateImage(0, delta);
+    });
+
+    // ---
+
+    const zoomInBtn = document.getElementById("zoomInBtn");
+    zoomInBtn.addEventListener('click', () => {
+        const deltaScale = 0.1;
+        photoEditor.scaleImage(deltaScale);
+    });
+
+    const zoomOutBtn = document.getElementById("zoomOutBtn");
+    zoomOutBtn.addEventListener('click', () => {
+        const deltaScale = -0.1;
+        photoEditor.scaleImage(deltaScale);
     });
 
 }

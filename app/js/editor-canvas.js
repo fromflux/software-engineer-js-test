@@ -1,23 +1,14 @@
-export default class PhotoEditor {
-  constructor(containerSelector) {
-    this.containerSelector = containerSelector;
-    this.containerEl = document.querySelector(containerSelector) || null;
+export default class EditorCanvas {
+  constructor(targetSelector) {
+    this.canvasEl = document.querySelector(targetSelector) || null;
 
-    if (!this.containerEl) {
-      throw new Error(`Failed to find element ${containerSelector}`);
+    if (!this.canvasEl) {
+      throw new Error(`Failed to find element ${targetSelector}`);
     }
 
-    this.containerEl.innerHTML = `
-      <canvas id="editor-canvas"></canvas>
-        
-      <button id="upBtn">UP</button>
-      <button id="downBtn">DOWN</button>
-      <button id="leftBtn">LEFT</button>
-      <button id="rightBtn">RIGHT</button>
-
-      <button id="zoomInBtn">ZOOM IN</button>
-      <button id="zoomOutBtn">ZOOM OUT</button>
-    `;
+    if (this.canvasEl.nodeName !== 'CANVAS') {
+      throw new Error(`Target element needs to be a canvas node`);
+    }
 
     this.SCREEN_FACTOR = 40;
 
@@ -41,46 +32,6 @@ export default class PhotoEditor {
 
     this.minScale = 0;
     this.currentScale = 0;
-
-    // --- BUTTONS ---
-
-    this.leftBtn = document.getElementById("leftBtn");
-    this.leftBtn.addEventListener('click', () => {
-      const delta = 10;
-      this.translateImage(-delta, 0)
-    });
-
-    this.rightBtn = document.getElementById("rightBtn");
-    this.rightBtn.addEventListener('click', () => {
-      const delta = 10;
-      this.translateImage(delta, 0)
-    });
-
-    this.upBtn = document.getElementById("upBtn");
-    this.upBtn.addEventListener('click', () => {
-      const delta = 10;
-      this.translateImage(0, -delta);
-    });
-
-    this.downBtn = document.getElementById("downBtn");
-    this.downBtn.addEventListener('click', () => {
-      const delta = 10;
-      this.translateImage(0, delta);
-    });
-
-    // ---
-
-    this.zoomInBtn = document.getElementById("zoomInBtn");
-    this.zoomInBtn.addEventListener('click', () => {
-      const deltaScale = 0.1;
-      this.scaleImage(deltaScale);
-    });
-
-    this.zoomOutBtn = document.getElementById("zoomOutBtn");
-    this.zoomOutBtn.addEventListener('click', () => {
-      const deltaScale = -0.1;
-      this.scaleImage(deltaScale);
-    });
   }
 
   translateImage(deltaX, deltaY) {
