@@ -173,11 +173,11 @@ export default class PhotoEditor {
           "height": this.CANVAS_HEIGHT / this.SCREEN_FACTOR,
         },
         "image": {
-          "data": this.inputImage.src,
           "width": this.imgWidth * this.currentScale / this.SCREEN_FACTOR,
           "height": this.imgHeight * this.currentScale / this.SCREEN_FACTOR,
           "x": this.xOffset / this.SCREEN_FACTOR,
-          "y": this.yOffset / this.SCREEN_FACTOR
+          "y": this.yOffset / this.SCREEN_FACTOR,
+          "data": this.inputImage.src,
         }
       }
     }
